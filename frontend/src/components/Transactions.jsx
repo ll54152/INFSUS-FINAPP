@@ -60,17 +60,24 @@ const Transactions = (props) => {
 
     const [page, setPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(5);
-    const filteredTransactions = transactions.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
-    const handlePageChange = (event, value) => {
-        setPage(value);
-    };
+    const [searchTerm, setSearchTerm] = useState('');
 
     const sortedTransactions = [...transactions].sort((a, b) => {
         const dateA = new Date(a.dateOfTransaction);
         const dateB = new Date(b.dateOfTransaction);
         return dateB - dateA;
     });
+
+    const filteredBySearch = sortedTransactions.filter(t =>
+            t.transactionName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const paginatedTransactions = filteredBySearch.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
 
     const resetForm = () => {
         setSelectedTransaction(null);
@@ -122,7 +129,7 @@ const Transactions = (props) => {
 
     const filterTransactions = (type) => {
         const today = new Date(getTodayDate());
-        return sortedTransactions.filter(transaction => {
+        return filteredBySearch.filter(transaction => {
             const transactionDate = new Date(transaction.dateOfTransaction);
             if (type === "toDo") {
                 return transactionDate > today;
@@ -151,7 +158,6 @@ const Transactions = (props) => {
                 alert(data ? data.message : 'Nepoznata greška');
             } else {
                 alert('Transakcija uspješno izbrisana');
-                //setTransactions((prevTransactions) => prevTransactions.filter((transaction) => transaction.id !== id));
                 window.location.reload();
             }
         } catch (err) {
@@ -227,7 +233,7 @@ const Transactions = (props) => {
 
     return (
         <div className="min-h-screen bg-[url('/pocetna.jpg')] bg-cover bg-fixed">
-            <Header isLoggedIn={isLoggedIn} onLogout={onLogout}/>
+            <Header isLoggedIn={isLoggedIn} onLogout={onLogout} onSearch={setSearchTerm}/>
             <Tabs defaultValue="all" className=" flex-col items-center justify-center mx-6">
                 <TabsList className="my-6">
                     <TabsTrigger className="text-xl" value="all">Sve transakcije</TabsTrigger>
@@ -284,7 +290,6 @@ const Transactions = (props) => {
                                    id="dateOfTransaction"
                                    value={dateOfTransaction}
                                    onChange={(e) => {
-                                       console.log(e.target.value);
                                        setDateOfTransaction(e.target.value)
                                    }}
                                    required
@@ -391,7 +396,6 @@ const Transactions = (props) => {
                                 </SelectContent>
                             </Select>
                             <div>
-
                                 <AddCategory></AddCategory>
                             </div>
                             <div>
@@ -423,7 +427,7 @@ const Transactions = (props) => {
                 </DialogContent>
             </Dialog>
             <Pagination
-                count={Math.ceil(transactions.length / itemsPerPage)}
+                count={Math.ceil(filteredBySearch.length / itemsPerPage)}
                 page={page}
                 onChange={handlePageChange}
                 color="primary"
