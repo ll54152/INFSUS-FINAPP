@@ -27,14 +27,14 @@ public class PersonController {
     public long createPerson(@RequestBody PersonDTO personDTO) {
         long id = personService.createPerson(personDTO);
         Person person = personService.findByPersonId(id);
-        categoryService.createCategory(new CategoryDTO(1, "Plaća"), person);
-        categoryService.createCategory(new CategoryDTO(2, "Hrana/Piće"), person);
-        categoryService.createCategory(new CategoryDTO(3, "Kuća"), person);
-        categoryService.createCategory(new CategoryDTO(4, "Stanarina"), person);
-        categoryService.createCategory(new CategoryDTO(5, "Trgovina"), person);
-        categoryService.createCategory(new CategoryDTO(6, "Odjeća"), person);
-        categoryService.createCategory(new CategoryDTO(7, "Mirovina"), person);
-        categoryService.createCategory(new CategoryDTO(8, "Putovanje"), person);
+        categoryService.createCategory(new CategoryDTO(1, "Salary"), person);
+        categoryService.createCategory(new CategoryDTO(2, "Food/Drinks"), person);
+        categoryService.createCategory(new CategoryDTO(3, "House"), person);
+        categoryService.createCategory(new CategoryDTO(4, "Rent"), person);
+        categoryService.createCategory(new CategoryDTO(5, "Groceries"), person);
+        categoryService.createCategory(new CategoryDTO(6, "Clothes"), person);
+        categoryService.createCategory(new CategoryDTO(7, "Pension"), person);
+        categoryService.createCategory(new CategoryDTO(8, "Travel"), person);
         return id;
     }
 

@@ -65,6 +65,6 @@ public class PersonControllerIntegrationTest {
 
         assertThat(categoryCaptor.getAllValues())
                 .extracting(CategoryDTO::getCategoryName)
-                .containsExactlyInAnyOrder("Plaća", "Hrana/Piće", "Kuća", "Stanarina", "Trgovina", "Odjeća", "Mirovina", "Putovanje");
+                .containsExactlyInAnyOrder("Salary", "Food/Drinks", "House", "Rent", "Groceries", "Clothes", "Pension", "Travel");
     }
 }
