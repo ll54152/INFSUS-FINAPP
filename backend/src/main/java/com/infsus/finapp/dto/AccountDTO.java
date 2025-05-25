@@ -63,7 +63,7 @@ public class AccountDTO {
         return currency;
     }
 
-    public void setCurrencyId(String currencyCode) {
+    public void setCurrencyId(String currency) {
         this.currency = currency;
     }
 }
