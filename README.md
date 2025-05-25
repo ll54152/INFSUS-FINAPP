@@ -43,3 +43,4 @@ npm run dev
 <p>Frontend is running on port 5173 and backend is running on port 8080. If you want to change the ports, you can do so in the <code>vite.config.js</code> file for frontend and in the <code>application.properties</code> file for backend.</p>
 <p>Database is hosted online but if you want to change to local test, you need to change <code>application.properties</code> for local connectin. Also, you can use SQL scripts for creating and inserting data.</p>
 
+
