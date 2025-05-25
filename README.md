@@ -20,6 +20,7 @@ git clone https://github.com/ll54152/INFSUS-FINAPP.git
 ```
 
 <h3>2. Start backend </h3>
+
 Open command prompt in backend folder and execute the following command:
 ```sh
 mvn spring-boot:run
