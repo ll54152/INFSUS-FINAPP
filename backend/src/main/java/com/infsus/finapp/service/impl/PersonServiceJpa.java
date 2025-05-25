@@ -53,7 +53,7 @@ public class PersonServiceJpa implements PersonService {
                 personDTO.getSurname()
         );
         if (personRepository.countByEmail((person.getEmail())) > 0) {
-            Assert.hasText("", "Korisnik s tim emailom već postoji!");
+            //Assert.hasText("", "Korisnik s tim emailom već postoji!");
             throw new RequestDeniedException(
                     "Korisnik s tim email-om već postoji!"
             );

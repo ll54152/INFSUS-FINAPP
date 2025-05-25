@@ -56,8 +56,14 @@ public class AccountServiceJpa implements AccountService {
             Assert.hasText("", "Račun s tim nazivom već postoji!");
         }
         Assert.notNull(accountDTO.getBalance(), "Stanje računa mora biti navedeno!");
-        Currency currency = currencyService.findByCurrencyCode(accountDTO.getCurrency());
-        Assert.notNull(currency, "Morate odabrati valutu!");
+
+        Currency currency = null;
+        if (accountDTO.getCurrency() != null) {
+            currency = currencyService.findByCurrencyCode(accountDTO.getCurrency());
+        } else {
+            throw new IllegalArgumentException("Morate odabrati valutu!");
+        }
+        //Assert.notNull(currency, "Morate odabrati valutu!");
 
         Account account = new Account(
                 accountDTO.getId(),
@@ -82,8 +88,13 @@ public class AccountServiceJpa implements AccountService {
         Assert.hasText(accountDTO.getAccountName(), "Ime računa mora biti navedeno!");
         Assert.notNull(accountDTO.getBalance(), "Stanje računa mora biti navedeno!");
 
-        Currency currency = currencyService.findByCurrencyCode(accountDTO.getCurrency());
-        Assert.notNull(currency, "Morate odabrati valutu!");
+        Currency currency = null;
+        if (accountDTO.getCurrency() != null) {
+            currency = currencyService.findByCurrencyCode(accountDTO.getCurrency());
+        } else {
+            throw new IllegalArgumentException("Morate odabrati valutu!");
+        }
+        //Assert.notNull(currency, "Morate odabrati valutu!");
 
         existingAccount.setAccountName(accountDTO.getAccountName());
         existingAccount.setBalance(accountDTO.getBalance());

@@ -66,7 +66,8 @@ public class CategoryServiceJpa implements CategoryService {
     public void deleteCategory(long id) {
         Category category = categoryRepository.findById(id);
         if (category == null) {
-            Assert.hasText("", "Kategorija s nazivom " + category.getCategoryName() + " ne postoji!");
+            //Assert.hasText("", "Kategorija s nazivom " + category.getCategoryName() + " ne postoji!");
+            throw new IllegalArgumentException("Kategorija s tim ID-em ne postoji!");
         }
 
         categoryRepository.deleteById(id);

@@ -37,8 +37,13 @@ public class AccountController {
 
     @PostMapping(path = "/createAccount")
     public void createAccount(@RequestBody AccountDTO accountDTO, @AuthenticationPrincipal User user) {
+
         String email = user.getUsername();
         Person person = personService.findByEmail(email);
+        if (person == null) {
+            throw new IllegalArgumentException("Person not found for email: " + email);
+        }
+
         accountService.createAccount(accountDTO, person);
     }
 

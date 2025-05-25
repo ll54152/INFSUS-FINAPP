@@ -258,7 +258,8 @@ public class TransactionServiceJpa implements TransactionService {
         Transaction transaction = transactionRepository.findById(id);
 
         if (transaction == null) {
-            Assert.hasText("", "Račun s nazivom " + transaction.getTransactionName() + " ne postoji!");
+            //Assert.hasText("", "Račun s nazivom " + transaction.getTransactionName() + " ne postoji!");
+            throw new IllegalArgumentException("Transakcija s tim ID-em ne postoji!");
         }
 
         Set<Account> accounts = person.getAccounts();
