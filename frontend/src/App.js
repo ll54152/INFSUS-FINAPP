@@ -53,7 +53,7 @@ function App() {
                         },
                     });
                     if (response.status === 401) {
-                        handleLogout(); // Automatska odjava ako sesija istekne
+                        handleLogout();
                     } else if (response.status >= 300 && response.status < 600) {
                         const data = await response.json();
                         setError(data.message || 'Nepoznata greška');
