@@ -36,7 +36,7 @@ npm install
 
 After installation, start the application by executing the following command in command prompt:
 ```sh
-npm run dev
+npm start
 ```
 <br>
 <h2>Note:</h2>
