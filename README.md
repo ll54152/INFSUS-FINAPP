@@ -1,4 +1,4 @@
-<h1>Informacijski sustavi - DZ3 </h1>
+<h1>Informacijski sustavi - FinApp </h1>
 
 <h2>Requirements:</h2>
 <ul>
