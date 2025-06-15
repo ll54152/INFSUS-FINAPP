@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_11ngn5e" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.36.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:message id="Message_1p9ken8" name="TransactionDeclined" />
+  <bpmn:message id="Message_2omvco8" name="TransactionApproved" />
+  <bpmn:collaboration id="Collaboration_1wwgeib">
+    <bpmn:extensionElements>
+      <camunda:properties>
+        <camunda:property />
+      </camunda:properties>
+    </bpmn:extensionElements>
+    <bpmn:participant id="Participant_08p3frf" name="" processRef="Process_1r056bh" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_1r056bh" isExecutable="true" camunda:historyTimeToLive="P1D">
+    <bpmn:laneSet id="LaneSet_1yup174">
+      <bpmn:lane id="Lane_1rvhwus" name="Coordinator">
+        <bpmn:flowNodeRef>provjeraTransakcije</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>transaconCheck</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_16zqkb6</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_0lb4h08" name="Author">
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>unosTransakcije</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0f8lykb</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:sequenceFlow id="Flow_1up0r3u" sourceRef="transaconCheck" targetRef="Event_0f8lykb">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!odobreno}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0sids1u" sourceRef="transaconCheck" targetRef="Event_16zqkb6">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${odobreno}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0v2mhs5" sourceRef="provjeraTransakcije" targetRef="transaconCheck" />
+    <bpmn:sequenceFlow id="Flow_0cc4j30" sourceRef="unosTransakcije" targetRef="provjeraTransakcije" />
+    <bpmn:sequenceFlow id="Flow_1drucr8" sourceRef="Event_0f8lykb" targetRef="unosTransakcije" />
+    <bpmn:sequenceFlow id="Flow_0ehysx2" sourceRef="StartEvent_1" targetRef="unosTransakcije" />
+    <bpmn:endEvent id="Event_16zqkb6">
+      <bpmn:incoming>Flow_0sids1u</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:intermediateCatchEvent id="Event_0f8lykb">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_1up0r3u</bpmn:incoming>
+      <bpmn:outgoing>Flow_1drucr8</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0ak9kou">
+       <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT60S</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+
+    </bpmn:intermediateCatchEvent>
+    <bpmn:exclusiveGateway id="transaconCheck" name="Jeli transakcija odobrena">
+      <bpmn:incoming>Flow_0v2mhs5</bpmn:incoming>
+      <bpmn:outgoing>Flow_1up0r3u</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0sids1u</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="provjeraTransakcije" name="Provjera transakcije">
+      <bpmn:incoming>Flow_0cc4j30</bpmn:incoming>
+      <bpmn:outgoing>Flow_0v2mhs5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="unosTransakcije" name="Unos transakcije">
+      <bpmn:incoming>Flow_0ehysx2</bpmn:incoming>
+      <bpmn:incoming>Flow_1drucr8</bpmn:incoming>
+      <bpmn:outgoing>Flow_0cc4j30</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0ehysx2</bpmn:outgoing>
+    </bpmn:startEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1wwgeib">
+      <bpmndi:BPMNShape id="Participant_08p3frf_di" bpmnElement="Participant_08p3frf" isHorizontal="true">
+        <dc:Bounds x="140" y="82" width="1890" height="618" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1rvhwus_di" bpmnElement="Lane_1rvhwus" isHorizontal="true">
+        <dc:Bounds x="170" y="430" width="1860" height="270" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0lb4h08_di" bpmnElement="Lane_0lb4h08" isHorizontal="true">
+        <dc:Bounds x="170" y="82" width="1860" height="348" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="312" y="152" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0qnb5t5_di" bpmnElement="unosTransakcije">
+        <dc:Bounds x="620" y="130" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0uqjbbh_di" bpmnElement="provjeraTransakcije">
+        <dc:Bounds x="620" y="520" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1rlqhrl_di" bpmnElement="transaconCheck" isMarkerVisible="true">
+        <dc:Bounds x="875" y="535" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="864" y="592" width="73" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0f8lykb_di" bpmnElement="Event_0f8lykb">
+        <dc:Bounds x="882" y="372" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_16zqkb6_di" bpmnElement="Event_16zqkb6">
+        <dc:Bounds x="1082" y="542" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0ehysx2_di" bpmnElement="Flow_0ehysx2">
+        <di:waypoint x="348" y="170" />
+        <di:waypoint x="620" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0cc4j30_di" bpmnElement="Flow_0cc4j30">
+        <di:waypoint x="670" y="210" />
+        <di:waypoint x="670" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0v2mhs5_di" bpmnElement="Flow_0v2mhs5">
+        <di:waypoint x="720" y="560" />
+        <di:waypoint x="875" y="560" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1up0r3u_di" bpmnElement="Flow_1up0r3u">
+        <di:waypoint x="900" y="535" />
+        <di:waypoint x="900" y="408" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1drucr8_di" bpmnElement="Flow_1drucr8">
+        <di:waypoint x="900" y="372" />
+        <di:waypoint x="900" y="170" />
+        <di:waypoint x="720" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0sids1u_di" bpmnElement="Flow_0sids1u">
+        <di:waypoint x="925" y="560" />
+        <di:waypoint x="1082" y="560" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
