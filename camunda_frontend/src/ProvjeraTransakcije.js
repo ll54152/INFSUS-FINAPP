@@ -1,4 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import {
+    Container,
+    Typography,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemSecondaryAction,
+    IconButton,
+    Button,
+    Paper,
+} from '@mui/material';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import TaskCompleteForm from './TaskCompleteForm';
 
 function ProvjeraTransakcije() {
@@ -9,7 +21,9 @@ function ProvjeraTransakcije() {
         fetch('/api/process/tasksWithVariables')
             .then(res => res.json())
             .then(data => {
-                const provjeraTasks = data.filter(task => task.name && task.name.toLowerCase().includes('provjera'));
+                const provjeraTasks = data.filter(task =>
+                    task.name?.toLowerCase().includes('provjera')
+                );
                 setTasks(provjeraTasks);
                 setSelectedTask(null);
             })
@@ -22,10 +36,15 @@ function ProvjeraTransakcije() {
 
     if (selectedTask) {
         return (
-            <div style={{ maxWidth: 600, margin: 'auto', padding: 20 }}>
-                <button onClick={() => setSelectedTask(null)} style={{ marginBottom: 20 }}>
+            <Container maxWidth="sm" sx={{ mt: 4 }}>
+                <Button
+                    variant="outlined"
+                    onClick={() => setSelectedTask(null)}
+                    sx={{ mb: 3 }}
+                >
                     ← Povratak na listu zadataka za provjeru
-                </button>
+                </Button>
+
                 <TaskCompleteForm
                     task={selectedTask}
                     onComplete={() => {
@@ -34,28 +53,39 @@ function ProvjeraTransakcije() {
                     }}
                     onCancel={() => setSelectedTask(null)}
                 />
-            </div>
+            </Container>
         );
     }
 
     return (
-        <div style={{ maxWidth: 600, margin: 'auto', padding: 20 }}>
-            <h1>Provjera transakcije - zadaci za potvrdu</h1>
+        <Container maxWidth="sm" sx={{ mt: 4 }}>
+            <Typography variant="h4" gutterBottom>
+                Provjera transakcije - zadaci za potvrdu
+            </Typography>
+
             {tasks.length === 0 ? (
-                <p>Nema zadataka za provjeru.</p>
+                <Typography>Nema zadataka za provjeru.</Typography>
             ) : (
-                <ul>
-                    {tasks.map(task => (
-                        <li key={task.id} style={{ marginBottom: 10 }}>
-                            <strong>{task.name}</strong> - {task.id}
-                            <button onClick={() => setSelectedTask(task)} style={{ marginLeft: 10 }}>
-                                Otvori
-                            </button>
-                        </li>
-                    ))}
-                </ul>
+                <Paper elevation={2}>
+                    <List>
+                        {tasks.map(task => (
+                            <ListItem key={task.id} divider>
+                                <ListItemText primary={task.name} secondary={task.id} />
+                                <ListItemSecondaryAction>
+                                    <IconButton
+                                        edge="end"
+                                        aria-label="open"
+                                        onClick={() => setSelectedTask(task)}
+                                    >
+                                        <OpenInNewIcon />
+                                    </IconButton>
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                        ))}
+                    </List>
+                </Paper>
             )}
-        </div>
+        </Container>
     );
 }
 

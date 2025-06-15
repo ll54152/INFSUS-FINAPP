@@ -1,4 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import {
+    Container,
+    Typography,
+    TextField,
+    Button,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemSecondaryAction,
+    IconButton,
+    Paper,
+    Box,
+} from '@mui/material';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import TaskCompleteForm from './TaskCompleteForm';
 
 function UnosTransakcije() {
@@ -12,7 +26,7 @@ function UnosTransakcije() {
         let variables;
         try {
             variables = JSON.parse(jsonInput);
-        } catch (e) {
+        } catch {
             alert('Neispravan JSON format');
             return;
         }
@@ -20,23 +34,24 @@ function UnosTransakcije() {
         fetch('/api/process/start', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(variables)
-        })
-            .then(res => {
-                if (res.ok) {
-                    alert('Proces pokrenut');
-                    fetchTasks();
-                } else {
-                    alert('Greška pri pokretanju procesa');
-                }
-            });
+            body: JSON.stringify(variables),
+        }).then(res => {
+            if (res.ok) {
+                alert('Proces pokrenut');
+                fetchTasks();
+            } else {
+                alert('Greška pri pokretanju procesa');
+            }
+        });
     };
 
     const fetchTasks = () => {
         fetch('/api/process/tasksWithVariables')
             .then(res => res.json())
             .then(data => {
-                const unosTasks = data.filter(task => task.name && task.name.toLowerCase().includes('unos'));
+                const unosTasks = data.filter(task =>
+                    task.name?.toLowerCase().includes('unos')
+                );
                 setTasks(unosTasks);
                 setSelectedTask(null);
             })
@@ -49,10 +64,15 @@ function UnosTransakcije() {
 
     if (selectedTask) {
         return (
-            <div style={{ maxWidth: 600, margin: 'auto', padding: 20 }}>
-                <button onClick={() => setSelectedTask(null)} style={{ marginBottom: 20 }}>
+            <Container maxWidth="sm" sx={{ mt: 4 }}>
+                <Button
+                    variant="outlined"
+                    onClick={() => setSelectedTask(null)}
+                    sx={{ mb: 3 }}
+                >
                     ← Povratak na listu zadataka za unos
-                </button>
+                </Button>
+
                 <TaskCompleteForm
                     task={selectedTask}
                     onComplete={() => {
@@ -61,43 +81,58 @@ function UnosTransakcije() {
                     }}
                     onCancel={() => setSelectedTask(null)}
                 />
-            </div>
+            </Container>
         );
     }
 
     return (
-        <div style={{ maxWidth: 600, margin: 'auto', padding: 20 }}>
-            <h1>Unos transakcije</h1>
+        <Container maxWidth="sm" sx={{ mt: 4 }}>
+            <Typography variant="h4" gutterBottom>
+                Unos transakcije
+            </Typography>
 
-            <label htmlFor="jsonInput">Unesite JSON varijable za proces:</label>
-            <textarea
-                id="jsonInput"
+            <TextField
+                label="Unesite JSON varijable za proces"
+                multiline
+                minRows={10}
                 value={jsonInput}
                 onChange={e => setJsonInput(e.target.value)}
-                rows={10}
-                style={{ width: '100%', fontFamily: 'monospace', marginTop: 10 }}
+                fullWidth
+                variant="outlined"
+                sx={{ fontFamily: 'monospace', mb: 3 }}
             />
 
-            <button onClick={startProcess} style={{ marginTop: 20, marginBottom: 40 }}>
+            <Button variant="contained" onClick={startProcess} sx={{ mb: 4 }}>
                 Pokreni novi proces
-            </button>
+            </Button>
 
-            <h2>Zadaci za potvrdu unosa</h2>
+            <Typography variant="h5" gutterBottom>
+                Zadaci za potvrdu unosa
+            </Typography>
+
             {tasks.length === 0 ? (
-                <p>Nema zadataka za unos.</p>
+                <Typography>Nema zadataka za unos.</Typography>
             ) : (
-                <ul>
-                    {tasks.map(task => (
-                        <li key={task.id} style={{ marginBottom: 10 }}>
-                            <strong>{task.name}</strong> - {task.id}
-                            <button onClick={() => setSelectedTask(task)} style={{ marginLeft: 10 }}>
-                                Otvori
-                            </button>
-                        </li>
-                    ))}
-                </ul>
+                <Paper elevation={2}>
+                    <List>
+                        {tasks.map(task => (
+                            <ListItem key={task.id} divider>
+                                <ListItemText primary={task.name} secondary={task.id} />
+                                <ListItemSecondaryAction>
+                                    <IconButton
+                                        edge="end"
+                                        aria-label="open"
+                                        onClick={() => setSelectedTask(task)}
+                                    >
+                                        <OpenInNewIcon />
+                                    </IconButton>
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                        ))}
+                    </List>
+                </Paper>
             )}
-        </div>
+        </Container>
     );
 }
 

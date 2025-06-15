@@ -5,4 +5,13 @@
     &quot;last_opened_file_path&quot;: &quot;C:/Users/lukal/IdeaProjects&quot;
   }
 }</component>
+  <component name="RunManager">
+    <configuration name="CamundaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="camunda" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.infsus.camunda.CamundaApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
 </project>
